@@ -9,9 +9,13 @@ interface FormValues {
 
 type SearchFormParams = {
   onFormSubmit: (data: { quarters: string; houseType: string }) => void;
+  initialValues: { quarters: string; houseType: string };
 };
 
-export const SearchForm: React.FC<SearchFormParams> = ({ onFormSubmit }) => {
+export const SearchForm: React.FC<SearchFormParams> = ({
+  onFormSubmit,
+  initialValues,
+}) => {
   const {
     register,
     handleSubmit,
@@ -47,6 +51,7 @@ export const SearchForm: React.FC<SearchFormParams> = ({ onFormSubmit }) => {
           variant="outlined"
           error={!!errors.quarters}
           helperText={errors.quarters ? errors.quarters.message : ""}
+          defaultValue={initialValues.quarters}
         />
         <TextField
           {...register("houseType", { required: true })}
@@ -56,6 +61,7 @@ export const SearchForm: React.FC<SearchFormParams> = ({ onFormSubmit }) => {
           variant="outlined"
           error={!!errors.houseType}
           helperText={errors.houseType ? "This field is required" : ""}
+          defaultValue={initialValues.houseType}
         />
 
         <Button type="submit" variant="contained" color="primary">
