@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
       }}
     >
       <Typography variant="body2" color="textSecondary" align="center">
-        {"Made with ❤️ by "}
+        {"Made by "}
         <Link
           color="inherit"
           href="https://www.linkedin.com/in/agnieszka-jankowy-9883771a8/"

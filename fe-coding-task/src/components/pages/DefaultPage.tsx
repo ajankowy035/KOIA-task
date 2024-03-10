@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getChartData } from "../../api";
@@ -52,6 +53,10 @@ const DefaultPage = () => {
     );
   };
 
+  const saveSearchEntryInLocalStorage = () => {
+    localStorage.setItem(new Date().getTime().toString(), window.location.href);
+  };
+
   return (
     <StyledBox>
       <SearchForm
@@ -63,6 +68,7 @@ const DefaultPage = () => {
       />
       {!chartData && "Here will be displayed a chart"}
       {chartData && <Chart data={chartData} />}
+      <Button onClick={saveSearchEntryInLocalStorage}>Save Search Entry</Button>
       <Footer />
     </StyledBox>
   );
