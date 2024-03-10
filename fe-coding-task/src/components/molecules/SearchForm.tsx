@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField } from "@mui/material";
-import { getChartData } from "../../api";
 
 interface FormValues {
   quarters: string;
@@ -9,7 +8,7 @@ interface FormValues {
 }
 
 type SearchFormParams = {
-  onFormSubmit: (data: any) => void;
+  onFormSubmit: (data: { quarters: string; houseType: string }) => void;
 };
 
 export const SearchForm: React.FC<SearchFormParams> = ({ onFormSubmit }) => {
@@ -20,22 +19,17 @@ export const SearchForm: React.FC<SearchFormParams> = ({ onFormSubmit }) => {
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
-    const chartData = await getChartData({
-      houseType: data.houseType,
-      quarters: data.quarters
-        .toUpperCase()
-        .replace(/\s+/g, "")
-        .trim()
-        .split(","),
-    });
-    onFormSubmit(chartData);
+    onFormSubmit(data);
   };
 
   const validateQuarters = (value: string) => {
-    const quartersArray = value.toUpperCase().trim().split(",");
-    const isValid = quartersArray.every((quarter) =>
-      /^\d{4}[Kk][1-4]$/.test(quarter.trim())
-    );
+    const quartersArray = value.split(",");
+    const isValid = quartersArray.every((quarter) => {
+      const [year] = quarter.trim().split("K");
+      const isValidFormat = /^\d{4}[Kk][1-4]$/.test(quarter.trim());
+      const isValidYear = parseInt(year) >= 2009;
+      return isValidFormat && isValidYear;
+    });
     return isValid || "Invalid quarters format";
   };
 

@@ -1,20 +1,40 @@
 import { useState } from "react";
+import { getChartData } from "../../api";
+import { ApiChartResponse } from "../../api/types";
 import { Footer, StyledBox } from "../atoms";
 import { SearchForm } from "../molecules";
 import { Chart } from "../organisms";
 
 const DefaultPage = () => {
-  const [chartData, setChartData] = useState();
+  const [chartData, setChartData] = useState<ApiChartResponse>();
 
-  const onFormSubmit = (data: any) => {
-    setChartData(data);
-    console.log({ chartData });
+  const onFormSubmit = async ({
+    houseType,
+    quarters,
+  }: {
+    houseType: string;
+    quarters: string;
+  }) => {
+    const parsedQuarters = quarters
+      .toUpperCase()
+      .replace(/\s+/g, "")
+      .trim()
+      .split(",");
+
+    const data = await getChartData({
+      houseType,
+      quarters: parsedQuarters,
+    });
+    if (data) {
+      setChartData(data);
+    }
   };
 
   return (
     <StyledBox>
       <SearchForm onFormSubmit={onFormSubmit} />
-      <Chart />
+      {!chartData && "Here will be displayed a chart"}
+      {chartData && <Chart data={chartData} />}
       <Footer />
     </StyledBox>
   );
