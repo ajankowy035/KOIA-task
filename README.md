@@ -1,5 +1,20 @@
+# Candidate disclaimer:
+
+To run application go to the react application folder:
+
+```
+cd fe-coding-task
+```
+
+and run
+
+```
+npm install && npm start
+```
+
 # Welcome to KOIA Soft FE Tech Interview
-Thank you for being so interested in our job offer. We would like to make the whole process go smoothly, efficiently and even for all the candidates, and that is 
+
+Thank you for being so interested in our job offer. We would like to make the whole process go smoothly, efficiently and even for all the candidates, and that is
 why we have prepared this for you.
 
 ## The tasks
@@ -8,7 +23,7 @@ We have prepared two technical tasks for you. Depending on your level, they shou
 
 ### Coding
 
-In `fe-coding-task`, You will find a simple application with some additional libraries that we would like you to use, so you will not have to spend time configuring the basics. Please check *INSTRUCTION.md* for detailed instructions for the task. 
+In `fe-coding-task`, You will find a simple application with some additional libraries that we would like you to use, so you will not have to spend time configuring the basics. Please check _INSTRUCTION.md_ for detailed instructions for the task.
 
 ### Review
 
@@ -18,15 +33,16 @@ You can put comments in the file or create a pull request within your repository
 
 ## How to send results
 
-Please download this repository (f.e. Zip file). Next, please make your own **git repository** and upload your files there. 
+Please download this repository (f.e. Zip file). Next, please make your own **git repository** and upload your files there.
 
-### Optional ###
+### Optional
+
 You can connect your repository with Vercel and share your coding task there. It's a nice addon that takes a few minutes.
 
-### Questions ###
+### Questions
 
-We didn't provide all the details in our tech task. And this is why we allow you to propose a solution, simplifying things, etc. But please be sure that we will ask you why you have done it. However, if you still have questions, we are happy to answer them. We know that proper coding starts with questions. 
+We didn't provide all the details in our tech task. And this is why we allow you to propose a solution, simplifying things, etc. But please be sure that we will ask you why you have done it. However, if you still have questions, we are happy to answer them. We know that proper coding starts with questions.
 
 # Good luck
 
-KOIA Soft 
+KOIA Soft
