@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getChartData } from "../../api";
@@ -66,9 +66,17 @@ const DefaultPage = () => {
           quarters: quartersQuery || "",
         }}
       />
+
       {!chartData && "Here will be displayed a chart"}
       {chartData && <Chart data={chartData} />}
-      <Button onClick={saveSearchEntryInLocalStorage}>Save Search Entry</Button>
+      {chartData && (
+        <Button variant="outlined" onClick={saveSearchEntryInLocalStorage}>
+          Save Search Entry
+        </Button>
+      )}
+      <Link sx={{ marginTop: 5, fontSize: "14px" }} href="/history">
+        Search History
+      </Link>
       <Footer />
     </StyledBox>
   );
