@@ -1,4 +1,4 @@
-# Candidate disclaimer:
+# Info from Candidate
 
 To run application go to the react application folder:
 
