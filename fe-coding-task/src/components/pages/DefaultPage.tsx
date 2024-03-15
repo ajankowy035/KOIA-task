@@ -1,4 +1,4 @@
-import { Button, Link } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getChartData } from "../../api";
@@ -9,6 +9,8 @@ import { Chart } from "../organisms";
 
 const DefaultPage = () => {
   const [chartData, setChartData] = useState<ApiChartResponse | null>();
+  const [error, setError] = useState<string | null>(null);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -19,11 +21,17 @@ const DefaultPage = () => {
     value.toUpperCase().replace(/\s+/g, "").trim().split(",");
 
   useEffect(() => {
+    setError(null);
+
     if (houseTypeQuery && quartersQuery) {
       getChartData({
         houseType: houseTypeQuery,
         quarters: parseQuarters(quartersQuery),
-      }).then((data) => setChartData(data));
+      })
+        .then((data) => setChartData(data))
+        .catch((_) => {
+          setError("Error fetching data. Please try again.");
+        });
     }
     return () => {
       setChartData(null);
@@ -37,9 +45,14 @@ const DefaultPage = () => {
     houseType: string;
     quarters: string;
   }) => {
+    setError(null);
+    setChartData(null);
+
     const data = await getChartData({
       houseType,
       quarters: parseQuarters(quarters),
+    }).catch((_) => {
+      setError("Error fetching data. Please try again.");
     });
     if (data) {
       setChartData(data);
@@ -66,6 +79,7 @@ const DefaultPage = () => {
           quarters: quartersQuery || "",
         }}
       />
+      {error && <Typography color="error">{error}</Typography>}
 
       {!chartData && "Here will be displayed a chart"}
       {chartData && <Chart data={chartData} />}

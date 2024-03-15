@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Box, Button, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { SearchOptions, searchOptions } from "./searchOptions";
 
 interface FormValues {
   quarters: string;
@@ -16,54 +23,68 @@ export const SearchForm: React.FC<SearchFormParams> = ({
   onFormSubmit,
   initialValues,
 }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
+  const [selected, setSelected] = useState<SearchOptions[]>(
+    searchOptions.filter((item) =>
+      initialValues.quarters.split(",").includes(item.value)
+    ) || []
+  );
+  const [houseType, setHouseType] = useState<string>(initialValues.houseType);
+  const [error, setError] = useState<string | null>(null);
+  const { handleSubmit } = useForm<FormValues>();
 
-  const onSubmit = async (data: FormValues) => {
-    onFormSubmit(data);
-  };
+  const onSubmit = () => {
+    if (houseType && selected.length > 0) {
+      setError(null);
 
-  const validateQuarters = (value: string) => {
-    const quartersArray = value.split(",");
-    const isValid = quartersArray.every((quarter) => {
-      const [year] = quarter.trim().split("K");
-      const isValidFormat = /^\d{4}[Kk][1-4]$/.test(quarter.trim());
-      const isValidYear = parseInt(year) >= 2009;
-      return isValidFormat && isValidYear;
-    });
-    return isValid || "Invalid quarters format";
+      onFormSubmit({
+        houseType,
+        quarters: selected.map((item) => item.value).join(","),
+      });
+    } else {
+      setError("Provide some values for searching");
+    }
   };
 
   return (
     <Box mt={2}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          {...register("quarters", {
-            required: true,
-            validate: validateQuarters,
-          })}
-          label="Quarters range"
-          fullWidth
-          margin="normal"
-          variant="outlined"
-          error={!!errors.quarters}
-          helperText={errors.quarters ? errors.quarters.message : ""}
-          defaultValue={initialValues.quarters}
-        />
-        <TextField
-          {...register("houseType", { required: true })}
-          label="House type"
-          fullWidth
-          margin="normal"
-          variant="outlined"
-          error={!!errors.houseType}
-          helperText={errors.houseType ? "This field is required" : ""}
-          defaultValue={initialValues.houseType}
+        <Autocomplete
+          multiple
+          renderInput={(params) => (
+            <TextField
+              variant="outlined"
+              label="Quartals"
+              {...params}
+              sx={{ width: "400px" }}
+            />
+          )}
+          options={searchOptions}
+          onChange={(_, newValue) => {
+            setSelected(newValue);
+          }}
+          value={selected}
         />
 
+        <Autocomplete
+          renderInput={(params) => (
+            <TextField
+              label="House Type"
+              margin="normal"
+              variant="outlined"
+              {...params}
+            />
+          )}
+          options={["00", "01", "02"]}
+          fullWidth
+          onChange={(_, newValue) => {
+            if (newValue) {
+              setHouseType(newValue);
+            }
+          }}
+          value={houseType}
+        />
+
+        {error && <Typography color="error">{error}</Typography>}
         <Button type="submit" variant="contained" color="primary">
           Search
         </Button>

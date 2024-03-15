@@ -41,5 +41,6 @@ export const getChartData = async ({
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    throw new Error("Error fetching data");
   }
 };
